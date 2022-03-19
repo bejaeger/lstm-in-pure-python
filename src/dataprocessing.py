@@ -43,12 +43,14 @@ def get_text_as_int(text, unique_chars):
 
 def get_vectorized_and_shuffled_data(int_text, sequence_length):
     # initialize data
+    num_batches = len(int_text) // sequence_length
+    int_text = int_text[: num_batches * sequence_length]  # trim to fit sequence length
     inputs = np.zeros((len(int_text) - sequence_length, sequence_length), dtype=np.int8)
     targets = np.zeros((len(int_text) - sequence_length, sequence_length), dtype=np.int8)
-    for i in range(len(targets)):
-        inputs[i] = int_text[i:sequence_length+i] # input
-        targets[i] = int_text[i+1:sequence_length+i+1] # target
-    # shuffle
-    p = np.random.permutation(len(inputs))
+    for i in range(num_batches-1):
+        step = i * sequence_length
+        inputs[i] = int_text[step:sequence_length+step] # input
+        targets[i] = int_text[step+1:sequence_length+step+1] # target
+    p = np.random.permutation(num_batches - 1)
     return inputs[p], targets[p]
     
