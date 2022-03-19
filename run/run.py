@@ -18,7 +18,7 @@ import numpy as np
 
 # For multi-layer LSTM
 sequence_length = 100
-n_neurons = 200
+n_neurons = 100
 
 learning_rate = 0.003
 n_epochs = 2
